@@ -1,7 +1,9 @@
+
 /*
  * Jaired J.
  * Johnny B.
  * Rhudy M.
+ * Lauren H.
  * Group: Conjoined Triangle of Success
  * Program Purpose: To record all orders for a bakery and display a receipt for the customer
  */
