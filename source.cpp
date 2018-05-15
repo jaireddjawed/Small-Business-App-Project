@@ -321,8 +321,8 @@ void sortAllItemsByPrice() {
 
 // saves a receipt to a text file based on customer information
 void displayAndPrintReceipt(string customerName) {
-    sortAllItemsByPrice();
-
+    unique_ptr<double> total(new double);
+    
     ofstream writeReceiptFile;
     writeReceiptFile.open("receipt.txt", fstream::app);
     writeReceiptFile << "Order #" << rand() << endl;
@@ -331,13 +331,14 @@ void displayAndPrintReceipt(string customerName) {
     
     // loop through vector, print receipt, and save it to the file
     for ( int i = 0; i < cart.size(); i++) {
-        
-        
         writeReceiptFile << "Cake Type: " << userCakeTypes.at(i) << endl;
         writeReceiptFile << "Cake Frosting: " << userFrostingTypes.at(i) << endl;
         writeReceiptFile << "Cake Filling: " << userFillingTypes.at(i) << endl;
         writeReceiptFile << "Price: " << cart.at(i) << endl;
+        *total+=cart.at(i);
     }
-    
+
+    writeReceiptFile << "Total: " << *total << endl;
     writeReceiptFile.close();
+    total.release();
 }
