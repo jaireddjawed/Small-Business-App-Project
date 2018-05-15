@@ -321,7 +321,7 @@ void sortAllItemsByPrice() {
 
 // saves a receipt to a text file based on customer information
 void displayAndPrintReceipt(string customerName) {
-    unique_ptr<double> total(new double);
+    auto_ptr<double>total(new double);
     
     ofstream writeReceiptFile;
     writeReceiptFile.open("receipt.txt", fstream::app);
@@ -340,5 +340,5 @@ void displayAndPrintReceipt(string customerName) {
 
     writeReceiptFile << "Total: " << *total << endl;
     writeReceiptFile.close();
-    total.release();
+    total.reset();
 }
