@@ -54,15 +54,15 @@ const double prices[5][3][4] = {
 
 double determineBaseCakePrice(string, string, string);
 int getItemIndexFromArray(string, string[], int);
-void displayAndPrintReceipt(string * , string * , string * , string * , double *);
+void displayAndPrintReceipt(string);
 
 int main() {
     bool repeatOrderProcess = true;
-    unique_ptr<string> customerName(new string);
+    string customerName;
 
     cout << "Welcome to the Conjoined Triangles of Success Bakery!" << endl;
     cout << "Please enter your full name: ";
-    cin >> *customerName;
+    cin >> customerName;
 
     while (repeatOrderProcess) {
         string cakeType;
@@ -114,8 +114,8 @@ int main() {
         // if the user doesn't want to order again, print the receipt and end the program, otherwise repeat
         if (repeatOrder == "no") {
             repeatOrderProcess = false;
-            // display and print reciept
-            cout << "Thanks " << *customerName << ", your order will be completed shortly." << endl;
+            displayAndPrintReceipt(customerName);
+            cout << "Thanks " << customerName << ", your order will be completed shortly." << endl;
         }
     }
 
@@ -158,7 +158,7 @@ int getItemIndexFromArray(string itemName, string items[], int itemLength) {
 }
 
 // saves a receipt to a text file based on customer information
-void displayAndPrintReceipt(string *customerName, string *cakeType, string *frostingType, string *fillingType, double * price) {
+void displayAndPrintReceipt(string customerName) {
 
     ofstream writeReceiptFile;
     writeReceiptFile.open("receipt.txt", fstream::app);
@@ -167,7 +167,7 @@ void displayAndPrintReceipt(string *customerName, string *cakeType, string *fros
     for ( int i = 0; i < cart.size(); i++) {
         writeReceiptFile << "Order #" << rand() << endl;
         writeReceiptFile << "________________________________" << endl;
-        writeReceiptFile << "Customer Name: " << *customerName << endl;
+        writeReceiptFile << "Customer Name: " << customerName << endl;
         writeReceiptFile << "Cake Type: " << userCakeTypes.at(i) << endl;
         writeReceiptFile << "Cake Frosting: " << userFrostingTypes.at(i) << endl;
         writeReceiptFile << "Cake Filling: " << userFillingTypes.at(i) << endl;
