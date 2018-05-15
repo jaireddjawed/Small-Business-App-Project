@@ -54,7 +54,6 @@ const double prices[5][3][4] = {
 
 double determineBaseCakePrice(string, string, string);
 int getItemIndexFromArray(string, string[], int);
-void swap(int *, int *);
 void sortAllItemsByPrice();
 void displayAndPrintReceipt(string);
 
@@ -301,12 +300,6 @@ int getItemIndexFromArray(string itemName, string items[], int itemLength) {
     }
     
     return -1;
-}
-
-void swap(int *xp, int *yp) {
-    int temp = *xp;
-    *xp = *yp;
-    *yp = temp;
 }
 
 void sortAllItemsByPrice() {
