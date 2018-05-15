@@ -58,11 +58,11 @@ void displayAndPrintReceipt(string * , string * , string * , string * , double *
 
 int main() {
     bool repeatOrderProcess = true;
-    string customerName;
+    unique_ptr<string> customerName(new string);
 
     cout << "Welcome to the Conjoined Triangles of Success Bakery!" << endl;
     cout << "Please enter your full name: ";
-    cin >> customerName;
+    cin >> *customerName;
 
     while (repeatOrderProcess) {
         string cakeType;
@@ -115,7 +115,7 @@ int main() {
         if (repeatOrder == "no") {
             repeatOrderProcess = false;
             // display and print reciept
-            cout << "Thanks " << customerName << ", your order will be completed shortly." << endl;
+            cout << "Thanks " << *customerName << ", your order will be completed shortly." << endl;
         }
     }
 
@@ -161,17 +161,10 @@ int getItemIndexFromArray(string itemName, string items[], int itemLength) {
 void displayAndPrintReceipt(string *customerName, string *cakeType, string *frostingType, string *fillingType, double * price) {
 
     ofstream writeReceiptFile;
-    ifstream readRecieptFile;
-    char outputFromReceiptFile[200];
+    writeReceiptFile.open("receipt.txt", fstream::app);
 
     // loop through vector, print receipt, and save it to the file
     for ( int i = 0; i < cart.size(); i++) {
-        writeReceiptFile.open("receipt.txt");
-        readRecieptFile.open("receipt.txt");
-
-        readRecieptFile >> outputFromReceiptFile;
-
-        writeReceiptFile << outputFromReceiptFile;
         writeReceiptFile << "Order #" << rand() << endl;
         writeReceiptFile << "________________________________" << endl;
         writeReceiptFile << "Customer Name: " << *customerName << endl;
@@ -182,5 +175,4 @@ void displayAndPrintReceipt(string *customerName, string *cakeType, string *fros
     }
 
     writeReceiptFile.close();
-    readRecieptFile.close();
 }
