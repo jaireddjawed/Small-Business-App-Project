@@ -9,12 +9,21 @@
 #include <iostream>
 #include <iomanip>
 #include <fstream>
+#include <vector>
+
 using namespace std;
 
 string cakeTypes[] = {"Chocolate", "Carrot", "Yellow", "Oreo", "Strawberry"};
 string frostingTypes[] = {"Chocolate", "Vanilla", "Cream Cheese"};
 string fillingTypes[] = {"Fudge", "Pudding", "Custard", "Mousse"};
 
+// vectors for the user's orders, will be used to print receipt laterss
+vector<string> userCakeTypes;
+vector<string> userFrostingTypes;
+vector<string> userFillingTypes;
+vector<double> cart;
+
+// a parallel, 3d array that lists all possible prices
 const double prices[5][3][4] = {
     {
         {10.12, 12.34, 13.34, 14.80},
@@ -92,21 +101,21 @@ int main() {
         double price = determineBaseCakePrice(cakeType, frostingType, fillingType);
         cout << price << endl;
 
-        char repeatOrder;
-        cout << "Would you like to make another order? (Yes / No): " << endl;
-        cin >> repeatOrder;
+        // add the new item to the user's cart
+        userCakeTypes.push_back(cakeType);
+        userFrostingTypes.push_back(frostingType);
+        userFillingTypes.push_back(fillingType);
+        cart.push_back(price);
 
-        displayAndPrintReceipt(&customerName, &cakeType, &frostingType, &fillingType, &price);
+        string repeatOrder;
+        cout << "Would you like to make another order? (Yes (Y) / No (N) ): " << endl;
+        cin >> repeatOrder;
         
-        switch (repeatOrder) {
-            case 'N':
-                repeatOrderProcess = false;
-                cout << "Bye " << customerName << ", your order will be completed shortly." << endl;
-                cout << "Have a great day!" << endl;
-                break;
-            default:
-                repeatOrderProcess = true;
-                break;
+        // if the user doesn't want to order again, print the receipt and end the program, otherwise repeat
+        if (repeatOrder == "no") {
+            repeatOrderProcess = false;
+            // display and print reciept
+            cout << "Thanks " << customerName << ", your order will be completed shortly." << endl;
         }
     }
 
@@ -153,21 +162,24 @@ void displayAndPrintReceipt(string *customerName, string *cakeType, string *fros
 
     ofstream writeReceiptFile;
     ifstream readRecieptFile;
-    string outputFromReceiptFile;
+    char outputFromReceiptFile[200];
 
-    writeReceiptFile.open("receipt.txt");
-    readRecieptFile.open("receipt.txt");
+    // loop through vector, print receipt, and save it to the file
+    for ( int i = 0; i < cart.size(); i++) {
+        writeReceiptFile.open("receipt.txt");
+        readRecieptFile.open("receipt.txt");
 
-    readRecieptFile >> outputFromReceiptFile;
+        readRecieptFile >> outputFromReceiptFile;
 
-    writeReceiptFile << outputFromReceiptFile;
-    writeReceiptFile << "Order #" << rand();
-    writeReceiptFile << "________________________________" << endl;
-    writeReceiptFile << "Customer Name: " << *customerName << endl;
-    writeReceiptFile << "Cake Type: " << *cakeType << endl;
-    writeReceiptFile << "Cake Frosting: " << *frostingType << endl;
-    writeReceiptFile << "Cake Filling: " << *fillingType << endl;
-    writeReceiptFile << "Total: " << *price << endl;
+        writeReceiptFile << outputFromReceiptFile;
+        writeReceiptFile << "Order #" << rand() << endl;
+        writeReceiptFile << "________________________________" << endl;
+        writeReceiptFile << "Customer Name: " << *customerName << endl;
+        writeReceiptFile << "Cake Type: " << userCakeTypes.at(i) << endl;
+        writeReceiptFile << "Cake Frosting: " << userFrostingTypes.at(i) << endl;
+        writeReceiptFile << "Cake Filling: " << userFillingTypes.at(i) << endl;
+        writeReceiptFile << "Total: " << cart.at(i) << endl;
+    }
 
     writeReceiptFile.close();
     readRecieptFile.close();
